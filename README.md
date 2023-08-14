@@ -16,7 +16,7 @@ Modify the inventory.ini file with your target server's IP address and SSH usern
 Run the following command to install dependencies on your local machine:
 
 ```bash
-make install_deps
+make setup
 ```
 
 Run the playbook to set up the server environment:

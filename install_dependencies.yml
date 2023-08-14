@@ -1,38 +1,30 @@
 ---
-- name: Install dependencies on the server
+- name: Install dependencies on server
   hosts: all
-  become: true
+  become: yes
   tasks:
-    # Docker installation
-    - name: Get Docker Installation Script
-      get_url:
-        url: https://get.docker.com
-        dest: /tmp/get-docker.sh
-        mode: '0777'
+    - name: Update repositories
+      apt:
+        update_cache: yes
+
     - name: Install Docker
-      command: /tmp/get-docker.sh
-    - name: Ensure Docker service is started
-      service:
-        name: docker
-        state: started
-    # PostgreSQL installation
+      apt:
+        name: [docker-ce, docker-ce-cli, containerd.io]
+        state: present
+        update_cache: yes
+
     - name: Install PostgreSQL
       apt:
-        name: ["postgresql", "postgresql-contrib"]
+        name: postgresql
         state: present
-    # Rust and Cargo installation
-    - name: Install rustup
+
+    - name: Install Rust and Cargo
       shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      args:
-        creates: /home/{{ ansible_user }}/.cargo/bin/rustup
-    # Java installation
-    - name: Install OpenJDK
+
+    - name: Install Java
       apt:
-        name: openjdk-11-jdk
+        name: default-jre
         state: present
-    # Minikube installation
+
     - name: Install Minikube
-      get_url:
-        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-        dest: /usr/local/bin/minikube
-        mode: '0777'
+      shell: curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
