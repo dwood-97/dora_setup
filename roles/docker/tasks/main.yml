@@ -16,7 +16,9 @@
 - name: Add Docker's official GPG key for Debian
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
+    id: 7EA0A9C3F273FCD8
     state: present
+
 
 - name: Set up the Docker repository for Debian
   apt_repository:
