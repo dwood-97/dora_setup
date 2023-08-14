@@ -2,76 +2,9 @@
 - name: Install dependencies on server
   hosts: all
   become: yes
-  tasks:
-    - name: Update repositories
-      apt:
-        update_cache: yes
-
-    - name: Install prerequisites for Docker repository setup
-      apt:
-        name: 
-          - ca-certificates
-          - curl
-          - gnupg
-        state: present
-        update_cache: yes
-
-    - name: Ensure keyring directory exists
-      file:
-        path: /etc/apt/keyrings
-        state: directory
-        mode: '0755'
-
-    - name: Add Docker's official GPG key for Debian
-      shell: |
-        curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        chmod a+r /etc/apt/keyrings/docker.gpg
-
-    - name: Set up the Docker repository for Debian
-      shell: |
-        echo "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
-
-    - name: Update repositories after adding Docker repo
-      apt:
-        update_cache: yes
-
-    - name: Install Docker for Debian
-      apt:
-        name: 
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-          - docker-buildx-plugin
-          - docker-compose-plugin
-        state: present
-        update_cache: yes
-
-    - name: Test Docker installation
-      command:
-        cmd: docker run hello-world
-        warn: no
-
-    - name: Install PostgreSQL
-      apt:
-        name: postgresql
-        state: present
-
-    - name: Install Rust and Cargo
-      shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      args:
-        creates: "$HOME/.cargo/bin/rustc"
-
-    - name: Add Rust to PATH in .bashrc
-      lineinfile:
-        path: "~/.bashrc"
-        line: 'export PATH="$HOME/.cargo/bin:$PATH"'
-        state: present
-        create: yes
-
-    - name: Install Java
-      apt:
-        name: default-jre
-        state: present
-
-    - name: Install Minikube
-      shell: curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+  roles:
+    - docker
+    - postgresql
+    - rust
+    - java
+    - minikube

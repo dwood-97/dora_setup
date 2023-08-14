@@ -1,18 +1,18 @@
-# Ansible Fresh Server Setup
+# Ansible Setup for Software Installation
 
-This repository contains Ansible playbooks and a Makefile to set up a fresh Linux server. It covers installing essential software, configuring the server environment, and installing specific packages.
+This repository contains an Ansible playbook to automate the installation of various software packages, including Docker, PostgreSQL, Rust, Java, and Minikube.
+
+## Prerequisites
+
+- Debian 11 (Bullseye)
+- sudo access
 
 ## Usage
 
-1. Clone this repository to your local machine and run the playbook:
+1. Clone the repository.
+2. Navigate to the directory.
+3. Run `make setup` to start the installation process.
 
-```bash
-sudo apt update
-sudo apt install git
-sudo apt install make
-git clone https://github.com/dwood-97/dora_setup
-cd dora_setup
-make setup
-```
+## Structure
 
-Enjoy your fresh server setup!
+The repository is organized into roles, allowing for modular and reusable configurations. Each role focuses on the installation and setup of a particular software or package.
