@@ -1,0 +1,10 @@
+---
+- name: Install software on fresh server
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Install essential packages
+      raw: apt update && apt install -y python3 python3-pip
+    - name: Install Ansible
+      pip:
+        name: ansible

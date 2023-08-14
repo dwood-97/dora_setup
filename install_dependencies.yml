@@ -1,0 +1,38 @@
+---
+- name: Install dependencies on the server
+  hosts: all
+  become: true
+  tasks:
+    # Docker installation
+    - name: Get Docker Installation Script
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/get-docker.sh
+        mode: '0777'
+    - name: Install Docker
+      command: /tmp/get-docker.sh
+    - name: Ensure Docker service is started
+      service:
+        name: docker
+        state: started
+    # PostgreSQL installation
+    - name: Install PostgreSQL
+      apt:
+        name: ["postgresql", "postgresql-contrib"]
+        state: present
+    # Rust and Cargo installation
+    - name: Install rustup
+      shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      args:
+        creates: /home/{{ ansible_user }}/.cargo/bin/rustup
+    # Java installation
+    - name: Install OpenJDK
+      apt:
+        name: openjdk-11-jdk
+        state: present
+    # Minikube installation
+    - name: Install Minikube
+      get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        dest: /usr/local/bin/minikube
+        mode: '0777'
