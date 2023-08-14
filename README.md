@@ -4,33 +4,12 @@ This repository contains Ansible playbooks and a Makefile to set up a fresh Linu
 
 ## Usage
 
-1. Clone this repository to your local machine:
+1. Clone this repository to your local machine and run the playbook:
 
 ```bash
 git clone https://github.com/dwood-97/dora_setup
 cd dora_setup
-```
-
-Modify the inventory.ini file with your target server's IP address and SSH username.
-
-Run the following command to install dependencies on your local machine:
-
-```bash
 make setup
-```
-
-Run the playbook to set up the server environment:
-
-```bash
-
-ansible-playbook -i inventory.ini setup_server.yml
-```
-
-Run the playbook to install software on the server:
-
-```bash
-
-ansible-playbook -i inventory.ini install_dependencies.yml
 ```
 
 Enjoy your fresh server setup!
