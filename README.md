@@ -7,6 +7,9 @@ This repository contains Ansible playbooks and a Makefile to set up a fresh Linu
 1. Clone this repository to your local machine and run the playbook:
 
 ```bash
+sudo apt update
+sudo apt install git
+sudo apt install make
 git clone https://github.com/dwood-97/dora_setup
 cd dora_setup
 make setup
