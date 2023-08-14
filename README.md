@@ -7,7 +7,7 @@ This repository contains Ansible playbooks and a Makefile to set up a fresh Linu
 1. Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/ansible_fresh_server.git
+git clone https://github.com/dwood-97/dora_setup
 cd ansible_fresh_server
 ```
 
