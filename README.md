@@ -8,7 +8,7 @@ This repository contains Ansible playbooks and a Makefile to set up a fresh Linu
 
 ```bash
 git clone https://github.com/dwood-97/dora_setup
-cd ansible_fresh_server
+cd dora_setup
 ```
 
 Modify the inventory.ini file with your target server's IP address and SSH username.
