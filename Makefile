@@ -27,7 +27,7 @@ ifeq ($(OS),Linux)
 		sudo ansible-playbook -i inventory.ini install_dependencies.yml; \
 	else \
 		echo "Unsupported operating system"; \
-	fi
+	fi;
 endif
 
 .PHONY: setup
