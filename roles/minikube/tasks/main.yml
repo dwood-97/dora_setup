@@ -1,0 +1,24 @@
+---
+- name: Install Minikube
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Minikube dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - curl
+        - virtualbox  # You can change this to your preferred hypervisor (e.g., kvm2, docker)
+
+    - name: Download and install Minikube
+      ansible.builtin.shell: |
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        chmod +x minikube-linux-amd64
+        mv minikube-linux-amd64 /usr/local/bin/minikube
+      args:
+        creates: /usr/local/bin/minikube
+
+    - name: Start Minikube cluster
+      ansible.builtin.shell: minikube start --driver=virtualbox  # Adjust the driver as needed
+      when: "'minikube' not in ansible_facts['environment']['PATH']"

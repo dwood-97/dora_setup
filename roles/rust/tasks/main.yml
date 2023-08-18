@@ -1,0 +1,23 @@
+---
+- name: Install Rust Programming Environment
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Download and install Rust
+      ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      args:
+        creates: /usr/local/cargo/bin/rustup
+
+    - name: Add Rust binaries to PATH
+      ansible.builtin.lineinfile:
+        dest: "{{ item }}"
+        line: 'export PATH="$PATH:/usr/local/cargo/bin"'
+      loop:
+        - /etc/profile
+        - /etc/bash.bashrc
+        - /etc/zsh/zshrc
+
+    - name: Set default Rust toolchain
+      ansible.builtin.shell: source $HOME/.cargo/env && rustup default stable
+      args:
+        creates: $HOME/.cargo/bin/rustc

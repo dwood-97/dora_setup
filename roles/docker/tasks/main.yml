@@ -1,6 +1,6 @@
 ---
 - name: Install Docker-related packages
-  hosts: your_target_hosts
+  hosts: localhost
   become: yes
   tasks:
     - name: Install Docker prerequisites

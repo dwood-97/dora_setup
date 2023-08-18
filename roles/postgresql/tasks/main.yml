@@ -1,0 +1,44 @@
+---
+- name: Install PostgreSQL
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install PostgreSQL and dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - postgresql
+        - postgresql-contrib
+        - postgresql-server  # Only for RedHat/CentOS, use postgresql-13 for example
+        - postgresql-client  # Only for Debian/Ubuntu, use postgresql-client-13 for example
+
+    - name: Initialize PostgreSQL database
+      ansible.builtin.shell: |
+        systemctl enable postgresql
+        systemctl start postgresql
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Initialize PostgreSQL database
+      ansible.builtin.shell: |
+        pg_ctlcluster {{ item }} main start
+      loop:
+        - 13  # Use the appropriate version here
+        - 12
+        - 11
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Set PostgreSQL password for user 'postgres'
+      ansible.builtin.shell: |
+        sudo -u postgres psql -c "ALTER USER postgres PASSWORD '{{ postgres_password }}';"
+      vars:
+        postgres_password: your_desired_password
+
+    - name: Create PostgreSQL user and database
+      ansible.builtin.shell: |
+        sudo -u postgres psql -c "CREATE USER {{ db_user }} WITH PASSWORD '{{ db_password }}';"
+        sudo -u postgres psql -c "CREATE DATABASE {{ db_name }} OWNER {{ db_user }};"
+      vars:
+        db_user: your_db_user
+        db_password: your_db_password
+        db_name: your_db_name

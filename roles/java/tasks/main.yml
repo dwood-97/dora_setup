@@ -1,0 +1,47 @@
+---
+- name: Install SDKMAN and Java 17.0.1-tem
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install SDKMAN prerequisites
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - unzip
+        - zip
+        - curl
+
+    - name: Create SDKMAN installation directory
+      ansible.builtin.file:
+        path: /opt/sdkman
+        state: directory
+
+    - name: Download and extract SDKMAN
+      ansible.builtin.unarchive:
+        src: "https://get.sdkman.io"
+        dest: /opt/sdkman
+        remote_src: yes
+        creates: /opt/sdkman/bin/sdkman-init.sh
+
+    - name: Source SDKMAN environment
+      ansible.builtin.shell: source /opt/sdkman/bin/sdkman-init.sh
+      args:
+        executable: /bin/bash
+        creates: /root/.sdkman
+
+    - name: Install Java 17.0.1-tem using SDKMAN
+      ansible.builtin.shell: |
+        source /opt/sdkman/bin/sdkman-init.sh
+        sdk install java 17.0.1-tem
+      args:
+        executable: /bin/bash
+      when: "'sdkman' not in ansible_facts['environment']['PATH']"
+
+    - name: Set Java 17.0.1-tem as default
+      ansible.builtin.shell: |
+        source /opt/sdkman/bin/sdkman-init.sh
+        sdk default java 17.0.1-tem
+      args:
+        executable: /bin/bash
+      when: "'sdkman' not in ansible_facts['environment']['PATH']"
