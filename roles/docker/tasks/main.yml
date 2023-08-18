@@ -29,7 +29,8 @@
       loop:
         - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
         - yum-config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-      when: ansible_facts['os_family'] == 'RedHat' or ansible_facts['os_family'] == 'Fedora'
+        - yum-config-manager --add-repo https://download.docker.com/linux/amazon/docker-ce.repo
+      when: ansible_facts['os_family'] == 'RedHat' or ansible_facts['os_family'] == 'Fedora' or ansible_facts['os_family'] == 'Amazon'
 
     - name: Add Docker pacman repo
       ansible.builtin.copy:
