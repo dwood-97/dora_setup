@@ -28,5 +28,6 @@ ifeq ($(OS),Linux)
 	else \
 		echo "Unsupported operating system"; \
 	fi
+endif
 
 .PHONY: setup
